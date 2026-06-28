@@ -220,6 +220,24 @@ input:focus,textarea:focus,select:focus{outline:2px solid #00337C;border-color:#
                                                                                                                                                                                                                     }
 
                                                                                                                                                                                                                     function share(title,location){
+const text=`🔍 *SadakSach - सड़क का सच*\n\n📋 ${title}\n📍 ${location}\n\n✊ Bhrashtachar ko ujaagar karo!\n🔗 rudra-ai-design.github.io/SadakSach`;
+const url=`rudra-ai-design.github.io/SadakSach`;
+const encodedText=encodeURIComponent(text);
+const shareOptions=`<div style="position:fixed;bottom:70px;left:0;right:0;background:#fff;padding:15px;border-top:3px solid #00337C;z-index:999">
+<p style="color:#00337C;font-weight:bold;margin-bottom:10px">📤 Share karein:</p>
+<a href="https://wa.me/?text=${encodedText}" target="_blank" style="display:block;background:#25D366;color:#fff;padding:10px;border-radius:6px;text-decoration:none;margin:5px 0;text-align:center">📱 WhatsApp</a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" style="display:block;background:#1877F2;color:#fff;padding:10px;border-radius:6px;text-decoration:none;margin:5px 0;text-align:center">📘 Facebook</a>
+<a href="https://twitter.com/intent/tweet?text=${encodedText}" target="_blank" style="display:block;background:#1DA1F2;color:#fff;padding:10px;border-radius:6px;text-decoration:none;margin:5px 0;text-align:center">🐦 Twitter/X</a>
+<a href="mailto:?subject=SadakSach Report&body=${encodedText}" style="display:block;background:#EA4335;color:#fff;padding:10px;border-radius:6px;text-decoration:none;margin:5px 0;text-align:center">📧 Email</a>
+<button onclick="navigator.clipboard.writeText(text);alert('Link copy ho gaya!')" style="display:block;background:#00337C;color:#fff;padding:10px;border-radius:6px;border:none;width:100%;margin:5px 0;font-size:14px">🔗 Link Copy</button>
+<button onclick="document.getElementById('shareMenu').remove()" style="display:block;background:#666;color:#fff;padding:8px;border-radius:6px;border:none;width:100%;margin:5px 0;font-size:13px">❌ Band karo</button>
+</div>`;
+const div=document.createElement('div');
+div.id='shareMenu';
+div.innerHTML=shareOptions;
+document.getElementById('shareMenu')?.remove();
+document.body.appendChild(div);
+}title,location){
                                                                                                                                                                                                                     const text=`🚨 *SadakSach - 🔍सड़क का सच*\n\n📋 ${title}\n📍 ${location}\n\n✊ इस भ्रष्टाचार को उजागर करें!\n🔗 rudra-ai-design.github.io/SadakSach`;
                                                                                                                                                                                                                     if(navigator.share)navigator.share({title:'SadakSach',text});
                                                                                                                                                                                                                     else{navigator.clipboard.writeText(text);alert('✅ WhatsApp के लिए कॉपी हो गया!');}
