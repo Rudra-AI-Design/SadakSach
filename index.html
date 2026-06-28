@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SadakSach - Road Corruption Report</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#0f172a;color:#fff}
+.header{background:#dc2626;padding:15px;text-align:center}
+.header h1{font-size:24px}
+.header p{font-size:12px;opacity:0.8}
+.btn{background:#dc2626;color:#fff;border:none;padding:12px 20px;border-radius:8px;font-size:16px;width:100%;margin:8px 0;cursor:pointer}
+.btn-green{background:#16a34a}
+.card{background:#1e293b;border-radius:10px;padding:15px;margin:10px}
+input,textarea,select{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #334155;background:#0f172a;color:#fff;font-size:14px}
+.badge{background:#dc2626;padding:3px 8px;border-radius:10px;font-size:11px}
+.vote-btn{background:#334155;color:#fff;border:none;padding:6px 12px;border-radius:5px;cursor:pointer}
+#formSection{display:none}
+.nav{display:flex;background:#1e293b;position:fixed;bottom:0;width:100%}
+.nav button{flex:1;padding:12px;background:none;color:#94a3b8;border:none;font-size:12px}
+.nav button.active{color:#dc2626}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>🚨 SadakSach</h1>
+<p>Road Corruption Report Platform</p>
+</div>
+
+<div id="homeSection">
+<div class="card">
+<button class="btn" onclick="showForm()">+ Nai Complaint Karo</button>
+</div>
+<div id="reportsList"></div>
+</div>
+
+<div id="formSection" class="card" style="margin:10px">
+<h3 style="margin-bottom:10px">📝 Complaint Darj Karo</h3>
+<input type="text" id="title" placeholder="Problem ka title (eg: Road 3 baar todi gayi)">
+<select id="category">
+<option value="road_broken">Road Baar Baar Todi</option>
+<option value="encroachment">Ghar ke aage Road Cover</option>
+<option value="corruption">Paisa Khaya - Kaam Nahi</option>
+<option value="other">Aur Kuch</option>
+</select>
+<input type="text" id="location" placeholder="Location (eg: Gandhi Nagar, Ward 5)">
+<input type="number" id="timesBroken" placeholder="Kitni baar toda? (eg: 3)" min="1" max="20">
+<textarea id="description" placeholder="Puri baat likho..." rows="4"></textarea>
+<button class="btn btn-green" onclick="submitReport()">✅ Submit Karo</button>
+<button class="btn" style="background:#334155" onclick="hideForm()">❌ Cancel</button>
+</div>
+
+<div style="height:60px"></div>
+<div class="nav">
+<button class="active" onclick="showHome()">🏠 Home</button>
+<button onclick="showStats()">📊 Stats</button>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://woauwytpcbfusqnwqgxz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvYXV3eXRwY2JmdXNxbndxZ3h6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NDM2MzIsImV4cCI6MjA5ODIxOTYzMn0.KLt-DJSohTt7daSoAuSDri7aFhceXJYlkFEIVWKKMqA';
+
+async function api(method, data=null){
+const res = await fetch(SUPABASE_URL+'/rest/v1/reports'+(method==='GET'?'?select=*&order=created_at.desc':''), {
+method, headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},
+body:data?JSON.stringify(data):null});
+if(method==='GET') return res.json();
+}
+
+async function loadReports(){
+const reports = await api('GET');
+const el = document.getElementById('reportsList');
+if(!reports||reports.length===0){el.innerHTML='<div class="card"><p style="text-align:center;color:#94a3b8">Abhi koi complaint nahi hai.<br>Pehli complaint aap karo!</p></div>';return;}
+el.innerHTML = reports.map(r=>`
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<span class="badge">${getCat(r.category)}</span>
+<small style="color:#94a3b8">${new Date(r.created_at).toLocaleDateString('hi-IN')}</small>
+</div>
+<h3 style="margin:8px 0;font-size:16px">${r.title}</h3>
+<p style="color:#94a3b8;font-size:13px">📍 ${r.location}</p>
+${r.times_broken>1?`<p style="color:#ef4444;font-size:13px">⚠️ ${r.times_broken} baar toda gaya!</p>`:''}
+<p style="margin:8px 0;font-size:13px">${r.description}</p>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+<button class="vote-btn" onclick="vote('${r.id}',${r.votes})">👍 ${r.votes||0} log sehmat</button>
+<button class="vote-btn" onclick="share('${r.title}','${r.location}')">📤 Share</button>
+</div>
+</div>`).join('');
+}
+
+function getCat(c){return{road_broken:'🚧 Road Todi',encroachment:'🏠 Encroachment',corruption:'💰 Corruption',other:'❗ Other'}[c]||c}
+
+async function submitReport(){
+const title=document.getElementById('title').value;
+const location=document.getElementById('location').value;
+const description=document.getElementById('description').value;
+const category=document.getElementById('category').value;
+const timesBroken=parseInt(document.getElementById('timesBroken').value)||1;
+if(!title||!location||!description){alert('Sab fields bharo!');return;}
+await api('POST',{title,location,description,category,times_broken:timesBroken,votes:0});
+alert('✅ Complaint submit ho gayi!');
+hideForm();loadReports();
+}
+
+async function vote(id,current){
+await fetch(SUPABASE_URL+'/rest/v1/reports?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({votes:(current||0)+1})});
+loadReports();
+}
+
+function share(title,location){
+const text=`🚨 SadakSach Report:\n${title}\n📍 ${location}\n\nAap bhi report karo: sadaksach`;
+if(navigator.share)navigator.share({title:'SadakSach',text});
+else{navigator.clipboard.writeText(text);alert('Copy ho gaya! Share karo!');}
+}
+
+function showForm(){document.getElementById('homeSection').style.display='none';document.getElementById('formSection').style.display='block';}
+function hideForm(){document.getElementById('homeSection').style.display='block';document.getElementById('formSection').style.display='none';}
+function showHome(){hideForm();loadReports();}
+function showStats(){alert('📊 Coming Soon!');}
+
+loadReports();
+</script>
+</body>
+</html>
