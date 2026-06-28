@@ -3,124 +3,264 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SadakSach - Road Corruption Report</title>
+<title>SadakSach - जन शिकायत पोर्टल</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,sans-serif;background:#0f172a;color:#fff}
-.header{background:#dc2626;padding:15px;text-align:center}
-.header h1{font-size:24px}
-.header p{font-size:12px;opacity:0.8}
-.btn{background:#dc2626;color:#fff;border:none;padding:12px 20px;border-radius:8px;font-size:16px;width:100%;margin:8px 0;cursor:pointer}
-.btn-green{background:#16a34a}
-.card{background:#1e293b;border-radius:10px;padding:15px;margin:10px}
-input,textarea,select{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #334155;background:#0f172a;color:#fff;font-size:14px}
-.badge{background:#dc2626;padding:3px 8px;border-radius:10px;font-size:11px}
-.vote-btn{background:#334155;color:#fff;border:none;padding:6px 12px;border-radius:5px;cursor:pointer}
-#formSection{display:none}
-.nav{display:flex;background:#1e293b;position:fixed;bottom:0;width:100%}
-.nav button{flex:1;padding:12px;background:none;color:#94a3b8;border:none;font-size:12px}
-.nav button.active{color:#dc2626}
+body{font-family:'Arial',sans-serif;background:#f5f5f5;color:#1a1a1a}
+
+/* Top Strip */
+.top-strip{background:#FF9933;height:6px}
+.top-strip-white{background:#ffffff;height:6px}
+.top-strip-green{background:#138808;height:6px}
+
+/* Header */
+.header{background:#00337C;padding:12px 15px}
+.header-top{display:flex;align-items:center;gap:12px}
+.ashoka{font-size:36px}
+.header-text h1{color:#FF9933;font-size:18px;font-weight:bold;letter-spacing:1px}
+.header-text h2{color:#ffffff;font-size:13px}
+.header-text p{color:#aac4ff;font-size:10px}
+.header-bottom{background:#1a4a9e;margin-top:10px;padding:6px 10px;border-radius:4px}
+.header-bottom p{color:#ffffff;font-size:11px;text-align:center;letter-spacing:0.5px}
+
+/* Notice Bar */
+.notice{background:#FFF3CD;border-left:4px solid #FF9933;padding:8px 12px;font-size:12px;color:#664d00}
+
+/* Main */
+.main{padding:10px}
+
+/* Complaint Button */
+.complaint-btn{background:#00337C;color:#fff;border:none;padding:14px;border-radius:6px;font-size:15px;width:100%;margin:10px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:bold;letter-spacing:0.5px}
+
+/* Cards */
+.card{background:#ffffff;border-radius:6px;padding:14px;margin:8px 0;border:1px solid #ddd;border-top:3px solid #00337C}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.badge{padding:3px 8px;border-radius:3px;font-size:10px;font-weight:bold;letter-spacing:0.5px}
+.badge-road{background:#FFF3CD;color:#664d00;border:1px solid #FF9933}
+.badge-corrupt{background:#FFE5E5;color:#8B0000;border:1px solid #dc3545}
+.card h3{font-size:14px;color:#00337C;margin:6px 0}
+.card .location{color:#666;font-size:12px;display:flex;align-items:center;gap:4px}
+.card .desc{color:#333;font-size:13px;margin:8px 0}
+.card .warning{color:#dc3545;font-size:12px;font-weight:bold}
+.card-footer{display:flex;justify-content:space-between;margin-top:10px;padding-top:8px;border-top:1px solid #eee}
+.vote-btn{background:#00337C;color:#fff;border:none;padding:6px 12px;border-radius:4px;font-size:12px;cursor:pointer}
+.share-btn{background:#138808;color:#fff;border:none;padding:6px 12px;border-radius:4px;font-size:12px;cursor:pointer}
+.ref-num{color:#999;font-size:10px;margin-top:4px}
+
+/* Form */
+.form-section{display:none;background:#fff;border-radius:6px;padding:15px;margin:10px 0;border:1px solid #ddd}
+.form-title{background:#00337C;color:#fff;padding:10px 15px;margin:-15px -15px 15px -15px;border-radius:6px 6px 0 0;font-size:14px;font-weight:bold}
+label{font-size:12px;color:#444;font-weight:bold;display:block;margin:10px 0 4px}
+input,textarea,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;font-size:13px;background:#fafafa}
+input:focus,textarea:focus,select:focus{outline:2px solid #00337C;border-color:#00337C}
+.submit-btn{background:#138808;color:#fff;border:none;padding:12px;border-radius:4px;font-size:14px;width:100%;margin-top:12px;cursor:pointer;font-weight:bold}
+.cancel-btn{background:#666;color:#fff;border:none;padding:10px;border-radius:4px;font-size:13px;width:100%;margin-top:8px;cursor:pointer}
+
+/* Nav */
+.nav{display:flex;background:#00337C;position:fixed;bottom:0;width:100%;border-top:3px solid #FF9933}
+.nav button{flex:1;padding:12px;background:none;color:#aac4ff;border:none;font-size:11px;cursor:pointer}
+.nav button.active{color:#FF9933;font-weight:bold}
+
+/* Empty */
+.empty{text-align:center;padding:30px;color:#666}
+.empty p{font-size:13px;margin-top:8px}
+
+/* Stats */
+.stat-box{background:#00337C;color:#fff;border-radius:6px;padding:12px;text-align:center;margin:5px}
+.stat-box h3{font-size:24px;color:#FF9933}
+.stat-box p{font-size:11px;color:#aac4ff}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
 </style>
 </head>
 <body>
 
+<!-- Indian Flag Colors -->
+<div class="top-strip"></div>
+<div class="top-strip-white"></div>
+<div class="top-strip-green"></div>
+
+<!-- Header -->
 <div class="header">
-<h1>🚨 SadakSach</h1>
-<p>Road Corruption Report Platform</p>
-</div>
+  <div class="header-top">
+      <div class="ashoka">🏛️</div>
+          <div class="header-text">
+                <h1>SADAKSACH</h1>
+                      <h2>जन शिकायत पोर्टल</h2>
+                            <p>भारत सरकार | नागरिक सेवा विभाग</p>
+                                </div>
+                                  </div>
+                                    <div class="header-bottom">
+                                        <p>🔒 सुरक्षित पोर्टल | Secure Citizen Grievance Portal</p>
+                                          </div>
+                                          </div>
 
-<div id="homeSection">
-<div class="card">
-<button class="btn" onclick="showForm()">+ Nai Complaint Karo</button>
-</div>
-<div id="reportsList"></div>
-</div>
+                                          <!-- Notice -->
+                                          <div class="notice">
+                                            ℹ️ यहाँ दर्ज शिकायतें सार्वजनिक रूप से दिखाई देंगी। भ्रष्टाचार को उजागर करें।
+                                            </div>
 
-<div id="formSection" class="card" style="margin:10px">
-<h3 style="margin-bottom:10px">📝 Complaint Darj Karo</h3>
-<input type="text" id="title" placeholder="Problem ka title (eg: Road 3 baar todi gayi)">
-<select id="category">
-<option value="road_broken">Road Baar Baar Todi</option>
-<option value="encroachment">Ghar ke aage Road Cover</option>
-<option value="corruption">Paisa Khaya - Kaam Nahi</option>
-<option value="other">Aur Kuch</option>
-</select>
-<input type="text" id="location" placeholder="Location (eg: Gandhi Nagar, Ward 5)">
-<input type="number" id="timesBroken" placeholder="Kitni baar toda? (eg: 3)" min="1" max="20">
-<textarea id="description" placeholder="Puri baat likho..." rows="4"></textarea>
-<button class="btn btn-green" onclick="submitReport()">✅ Submit Karo</button>
-<button class="btn" style="background:#334155" onclick="hideForm()">❌ Cancel</button>
-</div>
+                                            <!-- Home Section -->
+                                            <div id="homeSection" style="padding:10px;padding-bottom:70px">
+                                              <button class="complaint-btn" onclick="showForm()">
+                                                  📝 नई शिकायत दर्ज करें
+                                                    </button>
+                                                      <div id="reportsList"></div>
+                                                      </div>
 
-<div style="height:60px"></div>
-<div class="nav">
-<button class="active" onclick="showHome()">🏠 Home</button>
-<button onclick="showStats()">📊 Stats</button>
-</div>
+                                                      <!-- Form Section -->
+                                                      <div id="formSection" style="padding:10px;padding-bottom:70px;display:none">
+                                                        <div class="form-section" style="display:block">
+                                                            <div class="form-title">📋 शिकायत प्रपत्र | Complaint Form</div>
+                                                                
+                                                                    <label>शिकायत का विषय | Title *</label>
+                                                                        <input type="text" id="title" placeholder="eg: Road 3 baar todi gayi bina reason ke">
+                                                                            
+                                                                                <label>शिकायत का प्रकार | Category *</label>
+                                                                                    <select id="category">
+                                                                                          <option value="road_broken">🚧 सड़क बार-बार तोड़ी गई</option>
+                                                                                                <option value="encroachment">🏠 सड़क पर अतिक्रमण</option>
+                                                                                                      <option value="corruption">💰 भ्रष्टाचार - पैसा खाया</option>
+                                                                                                            <option value="incomplete">⚠️ अधूरा काम छोड़ दिया</option>
+                                                                                                                  <option value="other">📌 अन्य समस्या</option>
+                                                                                                                      </select>
+                                                                                                                          
+                                                                                                                              <label>स्थान | Location *</label>
+                                                                                                                                  <input type="text" id="location" placeholder="eg: Gandhi Nagar, Ward 5, Indore">
+                                                                                                                                      
+                                                                                                                                          <label>कितनी बार तोड़ा? | Times Broken</label>
+                                                                                                                                              <input type="number" id="timesBroken" placeholder="eg: 3" min="1" max="20">
+                                                                                                                                                  
+                                                                                                                                                      <label>पूरी जानकारी | Description *</label>
+                                                                                                                                                          <textarea id="description" placeholder="पूरी बात लिखें..." rows="4"></textarea>
+                                                                                                                                                              
+                                                                                                                                                                  <button class="submit-btn" onclick="submitReport()">✅ शिकायत दर्ज करें</button>
+                                                                                                                                                                      <button class="cancel-btn" onclick="hideForm()">❌ रद्द करें</button>
+                                                                                                                                                                        </div>
+                                                                                                                                                                        </div>
 
-<script>
-const SUPABASE_URL = 'https://woauwytpcbfusqnwqgxz.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvYXV3eXRwY2JmdXNxbndxZ3h6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NDM2MzIsImV4cCI6MjA5ODIxOTYzMn0.KLt-DJSohTt7daSoAuSDri7aFhceXJYlkFEIVWKKMqA';
+                                                                                                                                                                        <!-- Stats Section -->
+                                                                                                                                                                        <div id="statsSection" style="padding:10px;padding-bottom:70px;display:none">
+                                                                                                                                                                          <div class="card" style="border-top-color:#FF9933">
+                                                                                                                                                                              <h3 style="color:#00337C;margin-bottom:10px">📊 पोर्टल आँकड़े | Portal Statistics</h3>
+                                                                                                                                                                                  <div class="stats-grid">
+                                                                                                                                                                                        <div class="stat-box"><h3 id="totalCount">0</h3><p>कुल शिकायतें</p></div>
+                                                                                                                                                                                              <div class="stat-box"><h3 id="roadCount">0</h3><p>सड़क शिकायतें</p></div>
+                                                                                                                                                                                                    <div class="stat-box"><h3 id="corruptCount">0</h3><p>भ्रष्टाचार</p></div>
+                                                                                                                                                                                                          <div class="stat-box"><h3 id="votesCount">0</h3><p>कुल समर्थन</p></div>
+                                                                                                                                                                                                              </div>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                </div>
 
-async function api(method, data=null){
-const res = await fetch(SUPABASE_URL+'/rest/v1/reports'+(method==='GET'?'?select=*&order=created_at.desc':''), {
-method, headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},
-body:data?JSON.stringify(data):null});
-if(method==='GET') return res.json();
-}
+                                                                                                                                                                                                                <!-- Bottom Nav -->
+                                                                                                                                                                                                                <div class="nav">
+                                                                                                                                                                                                                  <button class="active" onclick="showHome()" id="navHome">🏠 होम</button>
+                                                                                                                                                                                                                    <button onclick="showStats()" id="navStats">📊 आँकड़े</button>
+                                                                                                                                                                                                                    </div>
 
-async function loadReports(){
-const reports = await api('GET');
-const el = document.getElementById('reportsList');
-if(!reports||reports.length===0){el.innerHTML='<div class="card"><p style="text-align:center;color:#94a3b8">Abhi koi complaint nahi hai.<br>Pehli complaint aap karo!</p></div>';return;}
-el.innerHTML = reports.map(r=>`
-<div class="card">
-<div style="display:flex;justify-content:space-between;align-items:center">
-<span class="badge">${getCat(r.category)}</span>
-<small style="color:#94a3b8">${new Date(r.created_at).toLocaleDateString('hi-IN')}</small>
-</div>
-<h3 style="margin:8px 0;font-size:16px">${r.title}</h3>
-<p style="color:#94a3b8;font-size:13px">📍 ${r.location}</p>
-${r.times_broken>1?`<p style="color:#ef4444;font-size:13px">⚠️ ${r.times_broken} baar toda gaya!</p>`:''}
-<p style="margin:8px 0;font-size:13px">${r.description}</p>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-<button class="vote-btn" onclick="vote('${r.id}',${r.votes})">👍 ${r.votes||0} log sehmat</button>
-<button class="vote-btn" onclick="share('${r.title}','${r.location}')">📤 Share</button>
-</div>
-</div>`).join('');
-}
+                                                                                                                                                                                                                    <script>
+                                                                                                                                                                                                                    const SUPABASE_URL = 'https://woauwytpcbfusqnwqgxz.supabase.co';
+                                                                                                                                                                                                                    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvYXV3eXRwY2JmdXNxbndxZ3h6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NDM2MzIsImV4cCI6MjA5ODIxOTYzMn0.KLt-DJSohTt7daSoAuSDri7aFhceXJYlkFEIVWKKMqA';
 
-function getCat(c){return{road_broken:'🚧 Road Todi',encroachment:'🏠 Encroachment',corruption:'💰 Corruption',other:'❗ Other'}[c]||c}
+                                                                                                                                                                                                                    let refCounter = 1000;
 
-async function submitReport(){
-const title=document.getElementById('title').value;
-const location=document.getElementById('location').value;
-const description=document.getElementById('description').value;
-const category=document.getElementById('category').value;
-const timesBroken=parseInt(document.getElementById('timesBroken').value)||1;
-if(!title||!location||!description){alert('Sab fields bharo!');return;}
-await api('POST',{title,location,description,category,times_broken:timesBroken,votes:0});
-alert('✅ Complaint submit ho gayi!');
-hideForm();loadReports();
-}
+                                                                                                                                                                                                                    async function api(method,data=null,id=null){
+                                                                                                                                                                                                                    const url=SUPABASE_URL+'/rest/v1/reports'+(method==='GET'?'?select=*&order=created_at.desc':id?'?id=eq.'+id:'');
+                                                                                                                                                                                                                    const res=await fetch(url,{method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},body:data?JSON.stringify(data):null});
+                                                                                                                                                                                                                    if(method==='GET')return res.json();
+                                                                                                                                                                                                                    }
 
-async function vote(id,current){
-await fetch(SUPABASE_URL+'/rest/v1/reports?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({votes:(current||0)+1})});
-loadReports();
-}
+                                                                                                                                                                                                                    function getCat(c){return{road_broken:'🚧 सड़क तोड़ी',encroachment:'🏠 अतिक्रमण',corruption:'💰 भ्रष्टाचार',incomplete:'⚠️ अधूरा काम',other:'📌 अन्य'}[c]||c}
+                                                                                                                                                                                                                    function getBadgeClass(c){return c==='corruption'?'badge-corrupt':'badge-road'}
+                                                                                                                                                                                                                    function getRef(){return 'SS/'+new Date().getFullYear()+'/'+String(Math.floor(Math.random()*9000)+1000)}
 
-function share(title,location){
-const text=`🚨 SadakSach Report:\n${title}\n📍 ${location}\n\nAap bhi report karo: sadaksach`;
-if(navigator.share)navigator.share({title:'SadakSach',text});
-else{navigator.clipboard.writeText(text);alert('Copy ho gaya! Share karo!');}
-}
+                                                                                                                                                                                                                    async function loadReports(){
+                                                                                                                                                                                                                    const reports=await api('GET');
+                                                                                                                                                                                                                    const el=document.getElementById('reportsList');
+                                                                                                                                                                                                                    if(!reports||reports.length===0){
+                                                                                                                                                                                                                    el.innerHTML='<div class="empty">📭<p>अभी कोई शिकायत दर्ज नहीं है।<br>पहली शिकायत आप दर्ज करें!</p></div>';
+                                                                                                                                                                                                                    return;
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                    el.innerHTML=reports.map(r=>`
+                                                                                                                                                                                                                    <div class="card">
+                                                                                                                                                                                                                    <div class="card-header">
+                                                                                                                                                                                                                    <span class="badge ${getBadgeClass(r.category)}">${getCat(r.category)}</span>
+                                                                                                                                                                                                                    <small style="color:#999;font-size:10px">${new Date(r.created_at).toLocaleDateString('hi-IN')}</small>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                    <h3>${r.title}</h3>
+                                                                                                                                                                                                                    <p class="location">📍 ${r.location}</p>
+                                                                                                                                                                                                                    ${r.times_broken>1?`<p class="warning">⚠️ ${r.times_broken} बार तोड़ा गया!</p>`:''}
+                                                                                                                                                                                                                    <p class="desc">${r.description}</p>
+                                                                                                                                                                                                                    <div class="card-footer">
+                                                                                                                                                                                                                    <button class="vote-btn" onclick="vote('${r.id}',${r.votes||0})">👍 ${r.votes||0} समर्थन</button>
+                                                                                                                                                                                                                    <button class="share-btn" onclick="share('${r.title}','${r.location}')">📤 WhatsApp</button>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                    <p class="ref-num">संदर्भ संख्या: ${getRef()}</p>
+                                                                                                                                                                                                                    </div>`).join('');
+                                                                                                                                                                                                                    }
 
-function showForm(){document.getElementById('homeSection').style.display='none';document.getElementById('formSection').style.display='block';}
-function hideForm(){document.getElementById('homeSection').style.display='block';document.getElementById('formSection').style.display='none';}
-function showHome(){hideForm();loadReports();}
-function showStats(){alert('📊 Coming Soon!');}
+                                                                                                                                                                                                                    async function submitReport(){
+                                                                                                                                                                                                                    const title=document.getElementById('title').value.trim();
+                                                                                                                                                                                                                    const location=document.getElementById('location').value.trim();
+                                                                                                                                                                                                                    const description=document.getElementById('description').value.trim();
+                                                                                                                                                                                                                    const category=document.getElementById('category').value;
+                                                                                                                                                                                                                    const timesBroken=parseInt(document.getElementById('timesBroken').value)||1;
+                                                                                                                                                                                                                    if(!title||!location||!description){alert('⚠️ कृपया सभी जानकारी भरें!');return;}
+                                                                                                                                                                                                                    await api('POST',{title,location,description,category,times_broken:timesBroken,votes:0});
+                                                                                                                                                                                                                    alert('✅ आपकी शिकायत सफलतापूर्वक दर्ज हो गई!\n\nशिकायत सार्वजनिक रूप से प्रकाशित की जाएगी।');
+                                                                                                                                                                                                                    document.getElementById('title').value='';
+                                                                                                                                                                                                                    document.getElementById('location').value='';
+                                                                                                                                                                                                                    document.getElementById('description').value='';
+                                                                                                                                                                                                                    document.getElementById('timesBroken').value='';
+                                                                                                                                                                                                                    hideForm();loadReports();
+                                                                                                                                                                                                                    }
 
-loadReports();
-</script>
-</body>
-</html>
+                                                                                                                                                                                                                    async function vote(id,current){
+                                                                                                                                                                                                                    await fetch(SUPABASE_URL+'/rest/v1/reports?id=eq.'+id,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({votes:current+1})});
+                                                                                                                                                                                                                    loadReports();
+                                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                                    function share(title,location){
+                                                                                                                                                                                                                    const text=`🚨 *SadakSach - जन शिकायत पोर्टल*\n\n📋 ${title}\n📍 ${location}\n\n✊ इस भ्रष्टाचार को उजागर करें!\n🔗 rudra-ai-design.github.io/SadakSach`;
+                                                                                                                                                                                                                    if(navigator.share)navigator.share({title:'SadakSach',text});
+                                                                                                                                                                                                                    else{navigator.clipboard.writeText(text);alert('✅ WhatsApp के लिए कॉपी हो गया!');}
+                                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                                    async function showStats(){
+                                                                                                                                                                                                                    document.getElementById('homeSection').style.display='none';
+                                                                                                                                                                                                                    document.getElementById('formSection').style.display='none';
+                                                                                                                                                                                                                    document.getElementById('statsSection').style.display='block';
+                                                                                                                                                                                                                    document.getElementById('navHome').classList.remove('active');
+                                                                                                                                                                                                                    document.getElementById('navStats').classList.add('active');
+                                                                                                                                                                                                                    const reports=await api('GET');
+                                                                                                                                                                                                                    if(reports){
+                                                                                                                                                                                                                    document.getElementById('totalCount').textContent=reports.length;
+                                                                                                                                                                                                                    document.getElementById('roadCount').textContent=reports.filter(r=>r.category==='road_broken').length;
+                                                                                                                                                                                                                    document.getElementById('corruptCount').textContent=reports.filter(r=>r.category==='corruption').length;
+                                                                                                                                                                                                                    document.getElementById('votesCount').textContent=reports.reduce((a,r)=>a+(r.votes||0),0);
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                                    function showHome(){
+                                                                                                                                                                                                                    document.getElementById('homeSection').style.display='block';
+                                                                                                                                                                                                                    document.getElementById('formSection').style.display='none';
+                                                                                                                                                                                                                    document.getElementById('statsSection').style.display='none';
+                                                                                                                                                                                                                    document.getElementById('navHome').classList.add('active');
+                                                                                                                                                                                                                    document.getElementById('navStats').classList.remove('active');
+                                                                                                                                                                                                                    loadReports();
+                                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                                    function showForm(){
+                                                                                                                                                                                                                    document.getElementById('homeSection').style.display='none';
+                                                                                                                                                                                                                    document.getElementById('formSection').style.display='block';
+                                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                                    function hideForm(){
+                                                                                                                                                                                                                    document.getElementById('formSection').style.display='none';
+                                                                                                                                                                                                                    document.getElementById('homeSection').style.display='block';
+                                                                                                                                                                                                                    loadReports();
+                                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                                    loadReports();
+                                                                                                                                                                                                                    </script>
+                                                                                                                                                                                                                    </body>
+                                                                                                                                                                                                                    </html>
